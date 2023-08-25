@@ -1,0 +1,17 @@
+{
+    "name": "dmarques/aluraplay",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Aluraplay\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Danilo Carlos Marques",
+            "email": "danilo.marques@basis.com.br"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {}
+}
