@@ -32,7 +32,7 @@
 
     <main class="container">
 
-        <form class="container__formulario">
+        <form class="container__formulario" action="../src/new-video.php" method="post">
             <h2 class="formulario__titulo">Envie um vídeo!</h2>
                 <div class="formulario__campo">
                     <label class="campo__etiqueta" for="url">Link embed</label>
@@ -43,7 +43,7 @@
 
                 <div class="formulario__campo">
                     <label class="campo__etiqueta" for="titulo">Titulo do vídeo</label>
-                    <input name="titulo" class="campo__escrita" required placeholder="Neste campo, dê o nome do vídeo"
+                    <input name="title" class="campo__escrita" required placeholder="Neste campo, dê o nome do vídeo"
                         id='titulo' />
                 </div>
 
