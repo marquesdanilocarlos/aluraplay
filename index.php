@@ -1,4 +1,5 @@
 <?php
+
 require_once __DIR__ . "/vendor/autoload.php";
 
 use Aluraplay\Database\Connection;
@@ -36,7 +37,7 @@ $videos = $stmt->fetchAll();
         <a class="logo" href="index.php"></a>
 
         <div class="cabecalho__icones">
-            <a href="./pages/enviar-video.html" class="cabecalho__videos"></a>
+            <a href="pages/enviar-video.php" class="cabecalho__videos"></a>
             <a href="./pages/login.html" class="cabecalho__sair">Sair</a>
         </div>
     </nav>
@@ -47,23 +48,23 @@ $videos = $stmt->fetchAll();
     <?php
     foreach ($videos as $video): ?>
         <?php
-        if (str_starts_with($video["url"], "https://")): ?>
-            <li class="videos__item">
-                <iframe width="100%" height="72%" src="<?= $video["url"]; ?>"
-                        title="YouTube video player" frameborder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowfullscreen></iframe>
-                <div class="descricao-video">
-                    <img src="./img/logo.png" alt="logo canal alura">
-                    <h3><?= $video["title"]; ?></h3>
-                    <div class="acoes-video">
-                        <a href="./pages/enviar-video.html">Editar</a>
-                        <a href="./pages/enviar-video.html">Excluir</a>
-                    </div>
+        if (!str_starts_with($video["url"], "https://")) {
+            $video["url"] = "https://www.youtube.com/embed/ABzDOSQkhTM?si=KH74DtTOQYT7Od1D";
+        } ?>
+        <li class="videos__item">
+            <iframe width="100%" height="72%" src="<?= $video["url"]; ?>"
+                    title="YouTube video player" frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen></iframe>
+            <div class="descricao-video">
+                <img src="./img/logo.png" alt="logo canal alura">
+                <h3><?= $video["title"]; ?></h3>
+                <div class="acoes-video">
+                    <a href="pages/enviar-video.php?id=<?= $video["id"]; ?>"">Editar</a>
+                    <a href="./src/delete-video.php?id=<?= $video["id"]; ?>">Excluir</a>
                 </div>
-            </li>
-        <?php
-        endif; ?>
+            </div>
+        </li>
     <?php
     endforeach; ?>
 </ul>

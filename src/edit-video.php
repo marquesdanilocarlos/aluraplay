@@ -1,12 +1,11 @@
 <?php
 
-require_once __DIR__ . "/../vendor/autoload.php";
-
 use Aluraplay\Database\Connection;
 
-$connection = Connection::getInstance();
+require_once __DIR__ . "/../vendor/autoload.php";
 
 $data = filter_input_array(INPUT_POST, [
+    "id" => FILTER_VALIDATE_INT,
     "url" => FILTER_VALIDATE_URL,
     "title" => FILTER_SANITIZE_SPECIAL_CHARS
 ]);
@@ -16,12 +15,11 @@ if (in_array(false, $data)) {
     exit;
 }
 
-$query = "INSERT INTO videos (title, url) VALUES (:title, :url)";
+$connection = Connection::getInstance();
+$query = "UPDATE videos SET url = :url, title = :title WHERE id = :id";
 $stmt = $connection->prepare($query);
 
-$result = $stmt->execute($data);
-
-if ($result) {
+if ($stmt->execute($data)) {
     header("Location: /aluraplay/index.php?success=1");
 } else {
     header("Location: /aluraplay/index.php?success=0");
