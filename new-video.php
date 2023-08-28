@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . "/../vendor/autoload.php";
+require_once __DIR__ . "/vendor/autoload.php";
 
 use Aluraplay\Database\Connection;
 
@@ -12,7 +12,7 @@ $data = filter_input_array(INPUT_POST, [
 ]);
 
 if (in_array(false, $data)) {
-    header("Location: /aluraplay/index.php");
+    header("Location: /");
     exit;
 }
 
@@ -22,7 +22,5 @@ $stmt = $connection->prepare($query);
 $result = $stmt->execute($data);
 
 if ($result) {
-    header("Location: /aluraplay/index.php?success=1");
-} else {
-    header("Location: /aluraplay/index.php?success=0");
+    header("Location: /");
 }

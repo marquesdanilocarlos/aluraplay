@@ -2,7 +2,7 @@
 
 use Aluraplay\Database\Connection;
 
-require_once __DIR__ . "/../vendor/autoload.php";
+require_once __DIR__ . "/vendor/autoload.php";
 
 $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
 
@@ -17,8 +17,6 @@ $stmt = $connection->prepare($query);
 $stmt->bindValue(":id", $id);
 
 if ($stmt->execute()) {
-    header("Location: /aluraplay/index.php?success=1");
-} else {
-    header("Location: /aluraplay/index.php?success=0");
+    header("Location: /");
 }
 

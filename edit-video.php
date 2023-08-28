@@ -2,7 +2,7 @@
 
 use Aluraplay\Database\Connection;
 
-require_once __DIR__ . "/../vendor/autoload.php";
+require_once __DIR__ . "/vendor/autoload.php";
 
 $data = filter_input_array(INPUT_POST, [
     "id" => FILTER_VALIDATE_INT,
@@ -11,7 +11,7 @@ $data = filter_input_array(INPUT_POST, [
 ]);
 
 if (in_array(false, $data)) {
-    header("Location: /aluraplay/index.php");
+    header("Location: /aluraplay");
     exit;
 }
 
@@ -20,7 +20,5 @@ $query = "UPDATE videos SET url = :url, title = :title WHERE id = :id";
 $stmt = $connection->prepare($query);
 
 if ($stmt->execute($data)) {
-    header("Location: /aluraplay/index.php?success=1");
-} else {
-    header("Location: /aluraplay/index.php?success=0");
+    header("Location: /");
 }
