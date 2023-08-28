@@ -1,22 +1,4 @@
 <?php
-
-require_once __DIR__ . "/vendor/autoload.php";
-
-use Aluraplay\Database\Connection;
-use Aluraplay\Repository\VideoRepository;
-
-$connection = Connection::getInstance();
-$repository = new VideoRepository($connection);
-
-try {
-    $videos = $repository->all();
-} catch (Exception $e) {
-    echo "<h1>{$e->getMessage()}</h1>";
-}
-
-?>
-
-<?php
 require_once __DIR__ . "/header.php"; ?>
 
     <ul class="videos__container" alt="videos alura">

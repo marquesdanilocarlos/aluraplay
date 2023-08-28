@@ -16,6 +16,24 @@ class VideoRepository
     {
     }
 
+    public function video(int $id): Video
+    {
+        $query = "SELECT * FROM videos WHERE id = :id";
+        $stmt = $this->connection->prepare($query);
+        $stmt->bindValue(":id", $id, PDO::PARAM_INT);
+
+        if (!$stmt->execute()) {
+            throw new Exception("Não foi possível deletar o vídeo da base de dados.");
+        }
+
+        $videoData = $stmt->fetch();
+        $video = new Video($videoData["url"], $videoData["title"]);
+        $video->setId($videoData["id"]);
+
+        return $video;
+
+    }
+
     public function insert(Video $video): bool
     {
         $query = "INSERT INTO videos (title, url) VALUES (:title, :url)";
