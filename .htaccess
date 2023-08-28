@@ -1,3 +1,17 @@
+# Start to Rewrite
 RewriteEngine On
-RewriteCond %{REQUEST_URI} !^public
-RewriteRule ^(.*)$ public/index.php [L]
+# For all URL starting with /css, /fonts, /img or /js
+RewriteCond %{REQUEST_URI} ^/?(css|fonts|img|js)(/.*)?$ [NC]
+RewriteRule ^.*$ /public/%1%2 [L]
+
+# Redirect all to the Application if not done already
+RewriteCond %{REQUEST_URI} !^/?public/index\.php [NC]
+# but not if the URL starts with css, fonts, img or js
+RewriteCond %{REQUEST_URI} !^/?(css|fonts|img|js)(/.*)?$ [NC]
+# or if request is a real file
+RewriteCond %{REQUEST_FILENAME} !-f
+# or if request is a real directory but not the root directory
+RewriteCond %{REQUEST_URI} ^/?$ [OR]
+RewriteCond %{REQUEST_FILENAME} !-d
+# Rewrite the rest to the index.php file in your public folder
+RewriteRule ^.*$ /public/index.php [NC,L]
