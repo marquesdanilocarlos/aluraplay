@@ -27,7 +27,7 @@ if (array_key_exists($key, $routes)) {
 }
 
 session_start();
-if (!array_key_exists("logado", $_SESSION) && $url !== "login") {
+if (!array_key_exists("logged", $_SESSION) && $url !== "login") {
     header("Location: login");
     return;
 }

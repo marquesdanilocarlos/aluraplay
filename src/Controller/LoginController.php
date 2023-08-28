@@ -16,7 +16,7 @@ class LoginController extends Controller
     public function dispatch(): void
     {
         if ($_SERVER['REQUEST_METHOD'] === "GET") {
-            if (!empty($_SESSION["logado"])) {
+            if (!empty($_SESSION["logged"])) {
                 header("Location: /");
             }
             require_once __DIR__ . "/../../views/login.php";
@@ -41,7 +41,7 @@ class LoginController extends Controller
                 return;
             }
 
-            $_SESSION["logado"] = true;
+            $_SESSION["logged"] = true;
             header("Location: /");
 
         } catch (Exception $e) {
