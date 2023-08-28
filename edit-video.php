@@ -1,24 +1,33 @@
 <?php
 
 use Aluraplay\Database\Connection;
+use Aluraplay\Entity\Video;
+use Aluraplay\Repository\VideoRepository;
 
 require_once __DIR__ . "/vendor/autoload.php";
 
 $data = filter_input_array(INPUT_POST, [
-    "id" => FILTER_VALIDATE_INT,
     "url" => FILTER_VALIDATE_URL,
     "title" => FILTER_SANITIZE_SPECIAL_CHARS
 ]);
+$id = filter_input(INPUT_POST, "id", FILTER_VALIDATE_INT);
 
 if (in_array(false, $data)) {
     header("Location: /aluraplay");
     exit;
 }
 
+$video = new Video(...$data);
+$video->setId($id);
 $connection = Connection::getInstance();
-$query = "UPDATE videos SET url = :url, title = :title WHERE id = :id";
-$stmt = $connection->prepare($query);
+$repository = new VideoRepository($connection);
 
-if ($stmt->execute($data)) {
+try {
+    $result = $repository->update($video);
+} catch (Exception $e) {
+    echo "<h1>{$e->getMessage()}</h1>";
+}
+
+if ($result) {
     header("Location: /");
 }

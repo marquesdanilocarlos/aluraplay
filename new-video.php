@@ -3,6 +3,8 @@
 require_once __DIR__ . "/vendor/autoload.php";
 
 use Aluraplay\Database\Connection;
+use Aluraplay\Entity\Video;
+use Aluraplay\Repository\VideoRepository;
 
 $connection = Connection::getInstance();
 
@@ -16,10 +18,13 @@ if (in_array(false, $data)) {
     exit;
 }
 
-$query = "INSERT INTO videos (title, url) VALUES (:title, :url)";
-$stmt = $connection->prepare($query);
+$repository = new VideoRepository($connection);
 
-$result = $stmt->execute($data);
+try {
+    $result = $repository->insert(new Video(...$data));
+} catch (Exception $e) {
+    echo "<h1>{$e->getMessage()}</h1>";
+}
 
 if ($result) {
     header("Location: /");

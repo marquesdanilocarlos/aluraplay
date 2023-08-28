@@ -1,6 +1,7 @@
 <?php
 
 use Aluraplay\Database\Connection;
+use Aluraplay\Repository\VideoRepository;
 
 require_once __DIR__ . "/vendor/autoload.php";
 
@@ -12,11 +13,15 @@ if (!$id) {
 }
 
 $connection = Connection::getInstance();
-$query = "DELETE FROM videos WHERE id = :id";
-$stmt = $connection->prepare($query);
-$stmt->bindValue(":id", $id);
+$repository = new VideoRepository($connection);
+try {
+    $result = $repository->remove($id);
+} catch (Exception $e) {
+    echo "<h1>{$e->getMessage()}</h1>";
+}
 
-if ($stmt->execute()) {
+
+if ($result) {
     header("Location: /");
 }
 
