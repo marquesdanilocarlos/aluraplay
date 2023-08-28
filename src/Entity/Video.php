@@ -2,11 +2,7 @@
 
 namespace Aluraplay\Entity;
 
-use http\Exception\InvalidArgumentException;
-
-use function filter_var;
-
-use const FILTER_VALIDATE_URL;
+use InvalidArgumentException;
 
 class Video
 {

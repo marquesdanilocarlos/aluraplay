@@ -7,9 +7,6 @@ use Aluraplay\Entity\Video;
 use Exception;
 use PDO;
 
-use function array_map;
-use function intval;
-
 class VideoRepository
 {
     public function __construct(private PDO $connection)
