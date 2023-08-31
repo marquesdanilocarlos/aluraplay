@@ -3,6 +3,7 @@
 namespace Aluraplay\Controller\Video;
 
 use Aluraplay\Controller\Controller;
+use Aluraplay\File;
 use Aluraplay\Repository\VideoRepository;
 use Exception;
 
@@ -19,6 +20,13 @@ class DeleteController extends Controller
     {
         try {
             $id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
+            $video = $this->repository->video($id);
+            $videoImagePath = $video->getImagePath();
+
+            if ($videoImagePath) {
+                File::remove($videoImagePath);
+            }
+
             $result = $this->repository->remove($id);
 
             if ($result) {

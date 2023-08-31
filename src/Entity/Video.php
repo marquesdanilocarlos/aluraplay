@@ -6,17 +6,24 @@ use InvalidArgumentException;
 
 class Video
 {
-    public readonly string $url;
+    private string $url = "";
     public readonly int $id;
+
+    private ?string $imagePath;
 
     public function __construct(string $url, public readonly string $title)
     {
         $this->setUrl($url);
     }
 
-    private function setUrl(string $url): void
+    public function getUrl(): string
     {
-        if (!filter_var($url, FILTER_VALIDATE_URL)) {
+        return $this->url;
+    }
+
+    public function setUrl(string $url): void
+    {
+        if (!filter_var($url, FILTER_VALIDATE_URL) && $url !== "") {
             throw new InvalidArgumentException();
         }
         $this->url = $url;
@@ -26,4 +33,16 @@ class Video
     {
         $this->id = $id;
     }
+
+    public function getImagePath(): ?string
+    {
+        return $this->imagePath;
+    }
+
+    public function setImagePath(?string $imagePath): void
+    {
+        $this->imagePath = $imagePath;
+    }
+
+
 }

@@ -25,18 +25,19 @@ class VideoRepository
 
         $videoData = $stmt->fetch();
         $video = new Video($videoData["url"], $videoData["title"]);
+        $video->setImagePath($videoData["image_path"]);
         $video->setId($videoData["id"]);
 
         return $video;
-
     }
 
     public function insert(Video $video): bool
     {
-        $query = "INSERT INTO videos (title, url) VALUES (:title, :url)";
+        $query = "INSERT INTO videos (title, url, image_path) VALUES (:title, :url, :imagePath)";
         $stmt = $this->connection->prepare($query);
         $stmt->bindValue(":title", $video->title);
-        $stmt->bindValue(":url", $video->url);
+        $stmt->bindValue(":url", $video->getUrl());
+        $stmt->bindValue(":imagePath", $video->getImagePath());
 
         if (!$stmt->execute()) {
             throw new Exception("Não foi possível inserir o vídeo na base de dados.");
@@ -64,10 +65,14 @@ class VideoRepository
     public function update(Video $video): bool
     {
         $connection = Connection::getInstance();
-        $query = "UPDATE videos SET url = :url, title = :title WHERE id = :id";
+        $imagePathSql = $video->getImagePath() ? ", image_path = :imagePath" : "";
+        $query = "UPDATE videos SET url = :url, title = :title {$imagePathSql} WHERE id = :id";
         $stmt = $connection->prepare($query);
-        $stmt->bindValue(":url", $video->url);
+        $stmt->bindValue(":url", $video->getUrl());
         $stmt->bindValue(":title", $video->title);
+        if ($imagePathSql) {
+            $stmt->bindValue(":imagePath", $video->getImagePath());
+        }
         $stmt->bindValue(":id", $video->id, PDO::PARAM_INT);
 
         if (!$stmt->execute()) {
@@ -93,6 +98,7 @@ class VideoRepository
         return array_map(function (array $videoData) {
             $video = new Video($videoData["url"], $videoData["title"]);
             $video->setId($videoData["id"]);
+            $video->setImagePath($videoData["image_path"]);
             return $video;
         }, $videos);
     }
