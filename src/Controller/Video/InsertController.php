@@ -39,7 +39,6 @@ class InsertController extends Controller
                 header("Location: /");
             }
 
-
         } catch (Exception $e) {
             echo "<h1>{$e->getMessage()}</h1>";
         }

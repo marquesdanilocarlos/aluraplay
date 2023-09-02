@@ -27,6 +27,16 @@ if (array_key_exists($key, $routes)) {
 }
 
 session_start();
+
+//Regerar o ID da sessão
+/*if (isset($_SESSION['logado'])) {
+    $originalInfo = $_SESSION['logado'];
+    unset($_SESSION['logado']);
+    session_regenerate_id();
+    $_SESSION['logado'] = $originalInfo;
+}*/
+
+
 if (!array_key_exists("logged", $_SESSION) && $url !== "login") {
     header("Location: login");
     return;
