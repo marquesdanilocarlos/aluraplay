@@ -5,7 +5,9 @@ use Aluraplay\Controller\LogoutController;
 use Aluraplay\Controller\Video\DeleteController;
 use Aluraplay\Controller\Video\EditController;
 use Aluraplay\Controller\Video\InsertController;
+use Aluraplay\Controller\Video\JsonListController;
 use Aluraplay\Controller\Video\ListController;
+use Aluraplay\Controller\Video\NewJsonController;
 
 return [
     "GET|/" => ListController::class,
@@ -16,5 +18,7 @@ return [
     "GET|deletar-video" => DeleteController::class,
     "GET|login" => LoginController::class,
     "POST|login" => LoginController::class,
-    "GET|logout" => LogoutController::class
+    "GET|logout" => LogoutController::class,
+    "GET|videos-json" => JsonListController::class,
+    "POST|novo-video-json" => NewJsonController::class,
 ];

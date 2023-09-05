@@ -9,7 +9,7 @@ class Video
     private string $url = "";
     public readonly int $id;
 
-    private ?string $imagePath;
+    private ?string $imagePath = null;
 
     public function __construct(string $url, public readonly string $title)
     {
