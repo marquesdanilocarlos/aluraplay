@@ -20,7 +20,7 @@ class ListController extends Controller
                 "videos" => $videos
             ]);
         } catch (Exception $e) {
-            echo "<h1>{$e->getMessage()}</h1>";
+
         }
     }
 }

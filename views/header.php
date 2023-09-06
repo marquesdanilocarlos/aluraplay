@@ -32,3 +32,9 @@
     </nav>
 
 </header>
+
+<?php
+if ($message): ?>
+    <h2 class="form-title error"><?= $message; ?></h2>
+<?php
+endif; ?>

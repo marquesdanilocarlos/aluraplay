@@ -33,7 +33,8 @@ class DeleteController extends Controller
                 header("Location: /");
             }
         } catch (Exception $e) {
-            echo "<h1>{$e->getMessage()}</h1>";
+            self::addMessage($e->getMessage());
+            header("Location: /");
         }
     }
 }

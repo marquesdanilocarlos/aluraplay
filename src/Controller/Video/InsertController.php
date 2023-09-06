@@ -5,6 +5,7 @@ namespace Aluraplay\Controller\Video;
 use Aluraplay\Controller\Controller;
 use Aluraplay\Entity\Video;
 use Aluraplay\File;
+use Aluraplay\FlashMessage;
 use Aluraplay\Repository\VideoRepository;
 use Exception;
 use stdClass;
@@ -26,7 +27,6 @@ class InsertController extends Controller
         }
 
         try {
-
             $data = filter_input_array(INPUT_POST, [
                 "url" => FILTER_VALIDATE_URL,
                 "title" => FILTER_SANITIZE_SPECIAL_CHARS
@@ -40,9 +40,9 @@ class InsertController extends Controller
             if ($result) {
                 header("Location: /");
             }
-
         } catch (Exception $e) {
-            echo "<h1>{$e->getMessage()}</h1>";
+            self::addMessage($e->getMessage());
+            header("Location /");
         }
     }
 }
