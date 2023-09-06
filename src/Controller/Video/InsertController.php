@@ -19,7 +19,9 @@ class InsertController extends Controller
     {
         if ($_SERVER['REQUEST_METHOD'] === "GET") {
             $video = new Video("", "");
-            require_once __DIR__ . "/../../../views/video/form.php";
+            $this->render("video/form", [
+                "video" => $video
+            ]);
             return;
         }
 

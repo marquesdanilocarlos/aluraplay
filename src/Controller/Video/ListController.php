@@ -16,7 +16,9 @@ class ListController extends Controller
     {
         try {
             $videos = $this->repository->all();
-            require_once __DIR__ . "/../../../views/video/list-videos.php";
+            $this->render("video/list-videos", [
+                "videos" => $videos
+            ]);
         } catch (Exception $e) {
             echo "<h1>{$e->getMessage()}</h1>";
         }

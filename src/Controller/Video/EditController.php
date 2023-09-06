@@ -25,7 +25,9 @@ class EditController extends Controller
             $video = $this->repository->video($id);
 
             if ($_SERVER['REQUEST_METHOD'] === "GET") {
-                require_once __DIR__ . "/../../../views/video/form.php";
+                $this->render("video/form", [
+                    "video" => $video
+                ]);
                 return;
             }
 
