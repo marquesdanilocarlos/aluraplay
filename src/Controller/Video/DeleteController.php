@@ -6,21 +6,34 @@ use Aluraplay\Controller\Controller;
 use Aluraplay\File;
 use Aluraplay\Repository\VideoRepository;
 use Exception;
+use Nyholm\Psr7\Response;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
 use const FILTER_VALIDATE_INT;
 use const INPUT_GET;
 
-class DeleteController extends Controller
+class DeleteController extends Controller implements RequestHandlerInterface
 {
     public function __construct(private readonly VideoRepository $repository)
     {
     }
 
-    public function dispatch(): void
+    public function handle(ServerRequestInterface $request): ResponseInterface
     {
         try {
-            $id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
+            $queryParams = $request->getQueryParams();
+            $id = filter_var($queryParams["id"], FILTER_VALIDATE_INT);
             $video = $this->repository->video($id);
+
+            if (!$id || empty($video)) {
+                self::addMessage("Video não encontrado.", MESSAGE_ERROR);
+                return new Response(301, [
+                    "Location" => "/"
+                ]);
+            }
+
             $videoImagePath = $video->getImagePath();
 
             if ($videoImagePath) {
@@ -30,11 +43,16 @@ class DeleteController extends Controller
             $result = $this->repository->remove($id);
 
             if ($result) {
-                header("Location: /");
+                self::addMessage("Video deletado com sucesso!", MESSAGE_SUCCESS);
+                return new Response(301, [
+                    "Location" => "/"
+                ]);
             }
         } catch (Exception $e) {
-            self::addMessage($e->getMessage());
-            header("Location: /");
+            self::addMessage($e->getMessage(), MESSAGE_ERROR);
+            return new Response(500, [
+                "Location" => "/"
+            ]);
         }
     }
 }

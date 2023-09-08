@@ -6,13 +6,13 @@ use Aluraplay\Controller\Controller;
 use Aluraplay\Entity\Video;
 use Aluraplay\Repository\VideoRepository;
 
-class JsonListController extends Controller
+class JsonListController extends Controller implements RequestHandlerInterface
 {
     public function __construct(private VideoRepository $videoRepository)
     {
     }
 
-    public function dispatch(): void
+    public function handle(): void
     {
         $videoList = array_map(function (Video $video): array {
             return [

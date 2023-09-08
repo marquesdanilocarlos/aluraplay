@@ -4,16 +4,18 @@ use Aluraplay\Controller\Controller;
 use Aluraplay\Controller\Error404;
 use Aluraplay\Database\Connection;
 use Aluraplay\Repository\VideoRepository;
+use Nyholm\Psr7\Factory\Psr17Factory;
+use Nyholm\Psr7Server\ServerRequestCreator;
 
 require_once __DIR__ . "/../vendor/autoload.php";
 
 $connection = Connection::getInstance();
 $repository = new VideoRepository($connection);
 
-$url = isset($_SERVER['REQUEST_URI']) ? explode('/', ltrim($_SERVER['REQUEST_URI'], '/')) : [];
-$url = array_shift($url);
-$newUrl = strstr($url, "?", true);
-$url = $newUrl ?: $url;
+$rawUrl = isset($_SERVER['REQUEST_URI']) ? explode('/', ltrim($_SERVER['REQUEST_URI'], '/')) : [];
+$rawUrl = array_shift($rawUrl);
+$newUrl = strstr($rawUrl, "?", true);
+$url = $newUrl ?: $rawUrl;
 $url = $url ?: "/";
 $method = $_SERVER["REQUEST_METHOD"];
 
@@ -42,8 +44,31 @@ if (!array_key_exists("logged", $_SESSION) && $url !== "login") {
     return;
 }
 
+
+$psr17Factory = new Psr17Factory();
+
+$creator = new ServerRequestCreator(
+    $psr17Factory, // ServerRequestFactory
+    $psr17Factory, // UriFactory
+    $psr17Factory, // UploadedFileFactory
+    $psr17Factory  // StreamFactory
+);
+
+$request = $creator->fromGlobals();
+
+
 /**
  * @var Controller $controller
  */
 $controller = new $controllerClass($repository);
-$controller->dispatch();
+$response = $controller->handle($request);
+http_response_code($response->getStatusCode());
+
+foreach ($response->getHeaders() as $name => $values) {
+    foreach ($values as $value) {
+        $name = ($name==="Location") ? "Location: " : $name;
+        header(sprintf('%s %s', $name, $value), false);
+    }
+}
+
+echo $response->getBody();

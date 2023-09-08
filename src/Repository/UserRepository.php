@@ -13,7 +13,7 @@ class UserRepository
     {
     }
 
-    public function getByEmail(string $email): User
+    public function getByEmail(string $email): ?User
     {
         $query = "SELECT * FROM users WHERE email = :email";
         $stmt = $this->connection->prepare($query);
@@ -24,6 +24,10 @@ class UserRepository
         }
 
         $userData = $stmt->fetch();
+
+        if (!$userData) {
+            return null;
+        }
 
         return new User(...$userData);
     }

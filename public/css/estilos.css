@@ -114,7 +114,31 @@ body > header {
 
 }
 
+.form-title {
+    font-size: 2rem;
+    padding: 0.5rem;
+}
+
 .error {
     color: red;
     margin-top: 1rem;
+    border: 1px solid red;
+}
+
+.default {
+    color: blue;
+    margin-top: 1rem;
+    border: 1px solid blue;
+}
+
+.warning {
+    color: orange;
+    margin-top: 1rem;
+    border: 1px solid orange;
+}
+
+.success {
+    color: green;
+    margin-top: 1rem;
+    border: 1px solid green;
 }

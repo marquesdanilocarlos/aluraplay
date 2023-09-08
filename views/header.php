@@ -35,6 +35,6 @@
 
 <?php
 if ($message): ?>
-    <h2 class="form-title error"><?= $message; ?></h2>
+    <h2 class="form-title <?= $message["type"]; ?>"><?= $message["message"]; ?></h2>
 <?php
 endif; ?>
