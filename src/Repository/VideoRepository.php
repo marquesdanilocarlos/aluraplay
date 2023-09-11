@@ -64,10 +64,9 @@ class VideoRepository
 
     public function update(Video $video): bool
     {
-        $connection = Connection::getInstance();
         $imagePathSql = $video->getImagePath() ? ", image_path = :imagePath" : "";
         $query = "UPDATE videos SET url = :url, title = :title {$imagePathSql} WHERE id = :id";
-        $stmt = $connection->prepare($query);
+        $stmt = $this->connection->prepare($query);
         $stmt->bindValue(":url", $video->getUrl());
         $stmt->bindValue(":title", $video->title);
         if ($imagePathSql) {

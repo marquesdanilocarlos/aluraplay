@@ -23,7 +23,7 @@ class ListController extends Controller implements RequestHandlerInterface
     {
         try {
             $videos = $this->repository->all();
-            return new Response(200, ["Content-type" => "application/json"], $this->render("video/list-videos", [
+            return new Response(200, [], $this->render("video/list-videos", [
                 "videos" => $videos
             ]));
         } catch (Exception $e) {

@@ -12,11 +12,9 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 class LoginController extends Controller implements RequestHandlerInterface
 {
-    private readonly UserRepository $repository;
 
-    public function __construct()
+    public function __construct(private readonly UserRepository $repository)
     {
-        $this->repository = new UserRepository(Connection::getInstance());
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface

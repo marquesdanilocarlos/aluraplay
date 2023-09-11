@@ -33,8 +33,10 @@
 
 </header>
 
-<?php
-if ($message): ?>
-    <h2 class="form-title <?= $message["type"]; ?>"><?= $message["message"]; ?></h2>
-<?php
-endif; ?>
+<div class="container">
+    <?php
+    if ($message): ?>
+        <h2 class="form-title <?= $message["type"]; ?>"><?= $message["message"]; ?></h2>
+    <?php
+    endif; ?>
+</div>
