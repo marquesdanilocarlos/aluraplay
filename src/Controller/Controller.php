@@ -3,16 +3,13 @@
 namespace Aluraplay\Controller;
 
 use Aluraplay\FlashMessage;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 
 abstract class Controller
 {
-    use FlashMessage;
 
     protected function render(string $templateName, array $context = []): string
     {
-        $context["message"] = self::showMessage();
+        $context["message"] = FlashMessage::showMessage();
         extract($context);
 
         ob_start();

@@ -8,6 +8,7 @@ use Aluraplay\File;
 use Aluraplay\FlashMessage;
 use Aluraplay\Repository\VideoRepository;
 use Exception;
+use League\Plates\Engine;
 use Nyholm\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -16,10 +17,10 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 class EditController extends Controller implements RequestHandlerInterface
 {
-    use FlashMessage;
-
-    public function __construct(private readonly VideoRepository $repository)
-    {
+    public function __construct(
+        private readonly VideoRepository $repository,
+        private readonly Engine $template
+    ) {
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
@@ -31,7 +32,7 @@ class EditController extends Controller implements RequestHandlerInterface
             $video = $this->repository->video($id);
 
             if ($_SERVER['REQUEST_METHOD'] === "GET") {
-                return new Response(200, [], $this->render("video/form", [
+                return new Response(200, [], $this->template->render("video/form", [
                     "id" => $id,
                     "video" => $video
                 ]));
@@ -51,13 +52,13 @@ class EditController extends Controller implements RequestHandlerInterface
             $result = $this->repository->update($video);
 
             if ($result) {
-                self::addMessage("Video editado com sucesso!", MESSAGE_SUCCESS);
+                FlashMessage::addMessage("Video editado com sucesso!", MESSAGE_SUCCESS);
                 return new Response(301, [
                     "Location" => "/"
                 ]);
             }
         } catch (Exception $e) {
-            self::addMessage($e->getMessage(), MESSAGE_ERROR);
+            FlashMessage::addMessage($e->getMessage(), MESSAGE_ERROR);
             return new Response(500, [
                 "Location" => "/"
             ]);

@@ -2,7 +2,7 @@
 
 namespace Aluraplay;
 
-trait FlashMessage
+class FlashMessage
 {
     public static function addMessage(string $message, string $type = MESSAGE_DEFAULT): void
     {

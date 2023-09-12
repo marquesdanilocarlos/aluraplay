@@ -2,7 +2,6 @@
 
 namespace Aluraplay\Repository;
 
-use Aluraplay\Database\Connection;
 use Aluraplay\Entity\Video;
 use Exception;
 use PDO;
@@ -13,7 +12,7 @@ class VideoRepository
     {
     }
 
-    public function video(int $id): Video
+    public function video(int $id): ?Video
     {
         $query = "SELECT * FROM videos WHERE id = :id";
         $stmt = $this->connection->prepare($query);
@@ -24,6 +23,11 @@ class VideoRepository
         }
 
         $videoData = $stmt->fetch();
+
+        if (!$videoData) {
+            return null;
+        }
+
         $video = new Video($videoData["url"], $videoData["title"]);
         $video->setImagePath($videoData["image_path"]);
         $video->setId($videoData["id"]);

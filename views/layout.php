@@ -13,14 +13,10 @@
     <title>AluraPlay</title>
     <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
 </head>
-
 <body>
-
 <header>
-
     <nav class="cabecalho">
         <a class="logo" href="/"></a>
-
         <div class="cabecalho__icones">
             <?php
             if (!empty($_SESSION["logged"])): ?>
@@ -30,9 +26,7 @@
             endif; ?>
         </div>
     </nav>
-
 </header>
-
 <div class="container">
     <?php
     if ($message): ?>
@@ -40,3 +34,8 @@
     <?php
     endif; ?>
 </div>
+
+<?= $this->section("content"); ?>
+
+</body>
+</html>

@@ -4,6 +4,7 @@ namespace Aluraplay\Controller\Video;
 
 use Aluraplay\Controller\Controller;
 use Aluraplay\File;
+use Aluraplay\FlashMessage;
 use Aluraplay\Repository\VideoRepository;
 use Exception;
 use Nyholm\Psr7\Response;
@@ -28,7 +29,7 @@ class DeleteController extends Controller implements RequestHandlerInterface
             $video = $this->repository->video($id);
 
             if (!$id || empty($video)) {
-                self::addMessage("Video não encontrado.", MESSAGE_ERROR);
+                FlashMessage::addMessage("Video não encontrado.", MESSAGE_ERROR);
                 return new Response(301, [
                     "Location" => "/"
                 ]);
@@ -43,13 +44,13 @@ class DeleteController extends Controller implements RequestHandlerInterface
             $result = $this->repository->remove($id);
 
             if ($result) {
-                self::addMessage("Video deletado com sucesso!", MESSAGE_SUCCESS);
+                FlashMessage::addMessage("Video deletado com sucesso!", MESSAGE_SUCCESS);
                 return new Response(301, [
                     "Location" => "/"
                 ]);
             }
         } catch (Exception $e) {
-            self::addMessage($e->getMessage(), MESSAGE_ERROR);
+            FlashMessage::addMessage($e->getMessage(), MESSAGE_ERROR);
             return new Response(500, [
                 "Location" => "/"
             ]);

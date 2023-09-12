@@ -1,12 +1,12 @@
 <?php
 
+use Aluraplay\FlashMessage;
 use DI\ContainerBuilder;
+use League\Plates\Engine;
 use Psr\Container\ContainerInterface;
 
-use function DI\create;
-
 /**
- * @var ContainerInterface $container;
+ * @var ContainerInterface $container
  */
 
 $builder = new ContainerBuilder();
@@ -18,8 +18,13 @@ $builder->addDefinitions([
             DB_PASS,
             DB_OPTIONS
         );
+    },
+    Engine::class => function () {
+        $templatePath = __DIR__ . "/../views/";
+        $engine = new Engine($templatePath);
+        $engine->addData(["message" => FlashMessage::showMessage()]);
+        return $engine;
     }
 ]);
-$container = $builder->build();
 
-return $container;
+return $builder->build();

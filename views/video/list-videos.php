@@ -1,7 +1,6 @@
 <?php
-
-require_once __DIR__ . "/../header.php"; ?>
-
+$this->layout("layout");
+?>
     <ul class="videos__container" alt="videos alura">
         <?php
         foreach ($videos as $video): ?>
@@ -33,5 +32,3 @@ require_once __DIR__ . "/../header.php"; ?>
         <?php
         endforeach; ?>
     </ul>
-<?php
-require_once __DIR__ . "/../footer.php"; ?>

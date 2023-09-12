@@ -8,6 +8,7 @@ use Aluraplay\File;
 use Aluraplay\FlashMessage;
 use Aluraplay\Repository\VideoRepository;
 use Exception;
+use League\Plates\Engine;
 use Nyholm\Psr7\Response;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -15,17 +16,18 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 class InsertController extends Controller implements RequestHandlerInterface
 {
-    use FlashMessage;
 
-    public function __construct(private readonly VideoRepository $repository)
-    {
+    public function __construct(
+        private readonly VideoRepository $repository,
+        private readonly Engine $template
+    ) {
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         if ($_SERVER['REQUEST_METHOD'] === "GET") {
             $video = new Video("", "");
-            return new Response(200, [], $this->render("video/form", [
+            return new Response(200, [], $this->template->render("video/form", [
                 "video" => $video
             ]));
         }
@@ -42,13 +44,13 @@ class InsertController extends Controller implements RequestHandlerInterface
             $result = $this->repository->insert($video);
 
             if ($result) {
-                self::addMessage("Video inserido com sucesso!", MESSAGE_SUCCESS);
+                FlashMessage::addMessage("Video inserido com sucesso!", MESSAGE_SUCCESS);
                 return new Response(301, [
                     "Location" => "/"
                 ]);
             }
         } catch (Exception $e) {
-            self::addMessage($e->getMessage(), MESSAGE_ERROR);
+            FlashMessage::addMessage($e->getMessage(), MESSAGE_ERROR);
             return new Response(500, [
                 "Location" => "/"
             ]);
