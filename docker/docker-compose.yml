@@ -1,0 +1,51 @@
+version: "3.7"
+services:
+  php:
+    env_file: ./.env
+    build: 
+      context: './php/'
+      args:
+       PHP_VERSION: ${PHP_VERSION}
+    links:
+      - mailcatcher
+    restart: always
+    volumes:
+      - /var/www/aluraplay:/var/www/html/
+      - './php/php-ini-overrides.ini:/usr/local/etc/php/conf.d/99-overrides.ini'
+      - './php/90-xdebug.ini:/usr/local/etc/php/conf.d/90-xdebug.ini'
+    container_name: "${PHP_NAME}"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+  apache:
+    build:
+      context: './apache/'
+      args:
+       APACHE_VERSION: ${APACHE_VERSION}
+    restart: always
+    depends_on:
+      - php
+    ports:
+      - "8000:80"
+    volumes:
+      - /var/www/aluraplay:/var/www/html/
+    container_name: "${APACHE_NAME}"
+  mysql:
+    image: mysql:${MYSQL_VERSION:-latest}
+    restart: always
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./mysql:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: "${DB_ROOT_PASSWORD}"
+      MYSQL_DATABASE: "${DB_NAME}"
+      MYSQL_PASSWORD: "${DB_PASSWORD}"
+    container_name: "${MYSQL_NAME}"
+  mailcatcher:
+    image: tophfr/mailcatcher
+    container_name: mailcatcher
+    ports:
+      - '2080:80'
+      - '2025:25'
+    restart: always
+
